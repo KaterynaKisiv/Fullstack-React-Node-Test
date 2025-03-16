@@ -11,10 +11,10 @@
     "apps/frontend"
   ],
   "scripts": {
-    "backend:start": "yarn workspace apps/backend start",
-    "backend:build": "yarn workspace apps/backend build",
-    "frontend:start": "yarn workspace apps/frontend start",
-    "frontend:build": "yarn workspace apps/frontend build"
+    "backend:start": "yarn workspace backend start",
+    "backend:build": "yarn workspace backend build",
+    "frontend:start": "yarn workspace frontend start",
+    "frontend:build": "yarn workspace frontend build"
   },
   "devDependencies": {
     "typescript": "^5.8.2"

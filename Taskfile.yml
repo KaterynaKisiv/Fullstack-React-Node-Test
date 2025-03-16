@@ -37,6 +37,27 @@ tasks:
       -f apps/frontend/Dockerfile 
       .
 
+  run-backend:
+    deps:
+      - build-backend-image
+    cmd: >
+      docker compose run --rm backend
+      sh -c "yarn run build && npx {{ .CLI_ARGS }}"
+
+  generate-migration:
+    cmds:
+      - task: run-backend
+        vars: {
+          CLI_ARGS: "typeorm migration:generate -d './dist/dataSource.js' './src/migrations/tasks'"
+        }
+
+  run-migrations:
+    cmds:
+      - task: run-backend
+        vars: {
+          CLI_ARGS: "typeorm migration:run -d './dist/dataSource.js'"
+        }
+
   run:
     deps:
       - build-backend-image

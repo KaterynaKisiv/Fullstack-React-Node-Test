@@ -1,15 +1,21 @@
 import express from 'express'
+import 'reflect-metadata'
+import routes from './api/routes.js'
+import AppDataSource from './dataSource.js'
+import errorHandler from './middleware/errorHandler.js'
+
 const app = express()
 const port = 8080
 
-app.get('/api', (req, res) => {
-  res.send('Hello World!')
-})
+await AppDataSource.initialize()
+console.log("Successfully initialized TypeORM DataSource.")
 
-app.get('/health', (req, res) => {
-  res.send('ok')
-})
+app.use(express.json())
+app.use(routes)
+app.use(errorHandler)
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+  console.log(`App listening on port ${port}`)
+}).on('error', (err) => {
+  console.log('Unexpected error occurred: ', err)
 })
