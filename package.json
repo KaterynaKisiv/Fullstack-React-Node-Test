@@ -1,0 +1,22 @@
+{
+  "name": "dteam",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:KaterynaKisiv/Fullstack-React-Node-Test.git",
+  "author": "kateryna <katerynakisiv@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "apps/backend",
+    "apps/frontend"
+  ],
+  "scripts": {
+    "backend:start": "yarn workspace apps/backend start",
+    "backend:build": "yarn workspace apps/backend build",
+    "frontend:start": "yarn workspace apps/frontend start",
+    "frontend:build": "yarn workspace apps/frontend build"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.2"
+  }
+}
