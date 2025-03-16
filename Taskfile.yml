@@ -1,8 +1,8 @@
 version: 3
 
 env:
-  BACKEND_IMAGE: github-project-crm-backend:latest
-  FRONTEND_IMAGE: github-project-crm-frontend:latest
+  BACKEND_IMAGE: tasks-managing-backend:latest
+  FRONTEND_IMAGE: tasks-managing-frontend:latest
 
 tasks:
   build-backend-image:
@@ -48,7 +48,9 @@ tasks:
     cmds:
       - task: run-backend
         vars: {
-          CLI_ARGS: "typeorm migration:generate -d './dist/dataSource.js' './src/migrations/tasks'"
+          CLI_ARGS: "typeorm migration:generate \ 
+          -d './dist/dataSource.js' \
+          './src/migrations/{{.MIGRATION_NAME | default \"migration\"}}'"
         }
 
   run-migrations:

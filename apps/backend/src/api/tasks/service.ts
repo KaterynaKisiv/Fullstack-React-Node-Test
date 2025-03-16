@@ -79,6 +79,7 @@ export const createTask = async (req: Request, res: Response, next: NextFunction
     .insert()
     .into(TaskEntity)
     .values([schemaResult])
+    .returning("*")
     .execute()
 
   res.send(createdTask.raw).status(200)
