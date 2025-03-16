@@ -1,0 +1,46 @@
+version: 3
+
+env:
+  BACKEND_IMAGE: github-project-crm-backend:latest
+  FRONTEND_IMAGE: github-project-crm-frontend:latest
+
+tasks:
+  build-backend-image:
+    internal: true
+    summary: "Build backend image"
+    sources:
+      - ./Taskfile.yml
+      - ./package.json
+      - ./apps/backend/package.json
+      - ./apps/backend/Dockerfile
+    status:
+      - docker image inspect $BACKEND_IMAGE >/dev/null
+    cmd: >
+      docker build 
+      -t $BACKEND_IMAGE 
+      -f apps/backend/Dockerfile 
+      .
+
+  build-frontend-image:
+    internal: true
+    summary: "Build frontend image"
+    sources:
+      - ./Taskfile.yml
+      - ./package.json
+      - ./apps/frontend/package.json
+      - ./apps/frontend/Dockerfile
+    status:
+      - docker image inspect $FRONTEND_IMAGE >/dev/null
+    cmd: >
+      docker build 
+      -t $FRONTEND_IMAGE 
+      -f apps/frontend/Dockerfile 
+      .
+
+  run:
+    deps:
+      - build-backend-image
+      - build-frontend-image
+    cmds:
+      - defer: docker compose down
+      - docker compose up --attach-dependencies nginx

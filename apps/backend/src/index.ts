@@ -2,8 +2,12 @@ import express from 'express'
 const app = express()
 const port = 8080
 
-app.get('/', (req, res) => {
+app.get('/api', (req, res) => {
   res.send('Hello World!')
+})
+
+app.get('/health', (req, res) => {
+  res.send('ok')
 })
 
 app.listen(port, () => {
