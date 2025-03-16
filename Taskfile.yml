@@ -1,8 +1,8 @@
 version: 3
 
 env:
-  BACKEND_IMAGE: github-project-crm-backend:latest
-  FRONTEND_IMAGE: github-project-crm-frontend:latest
+  BACKEND_IMAGE: tasks-managing-backend:latest
+  FRONTEND_IMAGE: tasks-managing-frontend:latest
 
 tasks:
   build-backend-image:
@@ -36,6 +36,29 @@ tasks:
       -t $FRONTEND_IMAGE 
       -f apps/frontend/Dockerfile 
       .
+
+  run-backend:
+    deps:
+      - build-backend-image
+    cmd: >
+      docker compose run --rm backend
+      sh -c "yarn run build && npx {{ .CLI_ARGS }}"
+
+  generate-migration:
+    cmds:
+      - task: run-backend
+        vars: {
+          CLI_ARGS: "typeorm migration:generate \ 
+          -d './dist/dataSource.js' \
+          './src/migrations/{{.MIGRATION_NAME | default \"migration\"}}'"
+        }
+
+  run-migrations:
+    cmds:
+      - task: run-backend
+        vars: {
+          CLI_ARGS: "typeorm migration:run -d './dist/dataSource.js'"
+        }
 
   run:
     deps:

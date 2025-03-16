@@ -4,3 +4,4 @@ src/frontend/node_modules/
 .idea/
 .db/
 .env
+.task/
