@@ -215,3 +215,20 @@ task run-migrations
             }
             ```
 ---
+
+## Authentication
+
+### Overview
+Authentication is handled using **HTTP-only cookies** for security. This allows session persistence while preventing XSS attacks.
+
+### Backend Authentication Flow
+1. **User Registration**: A user registers with email and password.
+2. **Login**: The user login with email and password and receives a generated token stored in an HTTP-only cookie. Cookies also are store in the sessions db with connection to the user. After login, all sessions of user are removed and new session is created.
+3. **Access Protected Routes**: Requests to protected endpoints must include the authentication cookie. All protected routes use authMiddleware to check if token is valid and to pull user from the session db. If token is invalid, cookie is cleared. In our case protection routes are tasks.
+4. **Logout**: The authentication cookie is cleared on logout. All sessions of user are removed from the session db.
+
+### Frontend Authentication Flow
+
+1. **Login Request**: The user submits login credentials via a form. If successful, an authentication cookie is set by the backend.
+3. **Accessing Protected Routes**: If the user is not authenticated (receives a `401` or `403` response), cookie is cleared on the backend side and redirected to the Login page.
+5. **Redirect on Login**: After successful login, the user is redirected to the tasks page.

@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import tasks from './tasks/routes.js'
-import users from './users/routes.js'
+import auth from './auth/routes.js'
 
 const app = Router()
 
@@ -10,6 +10,6 @@ app.get('/health', (req, res) => {
 
 const api = Router()
 api.use(tasks)
-api.use(users)
+api.use(auth)
 
 export default app.use('/api', api)

@@ -1,8 +1,11 @@
 import { Router } from 'express'
 import * as service from './service.js'
+import { authMiddleware } from '../../middleware/authMiddleware.js'
 
 const route = Router()
 const tasks = Router()
+
+tasks.use(authMiddleware)
 
 tasks.get('/', service.getTasks)
 

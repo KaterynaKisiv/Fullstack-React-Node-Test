@@ -21,7 +21,6 @@ export const getTasks = async (): Promise<Task[]> => {
 
 export const deleteTask = async (taskId: number): Promise<string> => {
   try {
-    console.log('here: ', taskId)
     const response = await axiosInstance.delete(`/tasks/${taskId}`)
     return response.data
   } catch (error) {

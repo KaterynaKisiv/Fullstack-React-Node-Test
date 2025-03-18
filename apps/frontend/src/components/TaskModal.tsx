@@ -6,6 +6,7 @@ import { Button, FormControl, InputLabel, MenuItem, Select, TextField, Typograph
 import styled from '@emotion/styled'
 import Spinner from './Spinner'
 import { ValidationErrors } from 'final-form'
+import { validate } from '../utils/validateFormValues'
 
 interface InitialValues {
   title: string,
@@ -35,13 +36,7 @@ const TaskModal = ({
   }
 
   const validateTask = useCallback((values: Record<string, any>): ValidationErrors | undefined => {
-    const result = TaskValidationSchema.safeParse(values)
-
-    if (!result.success) {
-      return result.error.flatten().fieldErrors
-    }
-
-    return undefined
+    return validate(values, TaskValidationSchema)
   }, [])
 
   return (

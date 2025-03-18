@@ -1,5 +1,6 @@
-import { Column, Entity } from 'typeorm'
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm'
 import { BaseEntity } from './base.js'
+import { UserEntity } from './users.js'
 
 export enum TASK_STATUS {
   TO_DO = 'TO_DO',
@@ -23,4 +24,11 @@ export class TaskEntity extends BaseEntity {
     default: TASK_STATUS.TO_DO,
   })
   status: TASK_STATUS
+
+  @Column()
+  userId: number
+
+  @ManyToOne(() => UserEntity, { onDelete: 'CASCADE' })
+  @JoinColumn()
+  user: UserEntity
 }
