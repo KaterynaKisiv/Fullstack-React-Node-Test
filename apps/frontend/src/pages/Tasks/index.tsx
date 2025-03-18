@@ -76,7 +76,7 @@ const TasksPage = () => {
       const tasks = await getTasks()
       dispatch({ type: ActionType.GET, payload: tasks })
     } catch (err) {
-      console.log('err: ', err)
+      console.log('error: ', err)
     } finally {
       setIsLoading(false)
     }
