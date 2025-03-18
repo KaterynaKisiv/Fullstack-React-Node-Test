@@ -10,7 +10,7 @@ export const getTasks = async (req: Request, res: Response) => {
     .createQueryBuilder("repository")
     .getMany()
 
-  res.send(result).status(200)
+  res.status(200).send(result)
 }
 
 export const deleteTaskById = async (req: Request, res: Response) => {
@@ -24,11 +24,11 @@ export const deleteTaskById = async (req: Request, res: Response) => {
     .execute()
 
   if (deletedRepository.affected !== 1) {
-    res.send(`Task with given id ${taskId} was not deleted`).status(400)
+    res.status(400).send(`Task with given id ${taskId} was not deleted`)
     return
   }
 
-  res.send('Successfully deleted').status(200)
+  res.status(200).send('Successfully deleted')
 }
 
 export const editTaskById = async (req: Request, res: Response, next: NextFunction) => {
@@ -37,7 +37,7 @@ export const editTaskById = async (req: Request, res: Response, next: NextFuncti
     schemaResult = schemas.EditTaskSchema.parse(req.body)
   } catch (error) {
     if (error instanceof ZodError) {
-      res.send(error.flatten()).status(400)
+      res.status(400).send(error.flatten())
       return
     }
     next(error)
@@ -54,11 +54,11 @@ export const editTaskById = async (req: Request, res: Response, next: NextFuncti
     .execute()
 
   if (updatedTask.affected !== 1) {
-    res.send(`Task with given id ${taskId} was not updated`).status(400)
+    res.status(400).send(`Task with given id ${taskId} was not updated`)
     return
   }
 
-  res.send('Successfully updated').status(200)
+  res.status(200).send('Successfully updated')
 }
 
 export const createTask = async (req: Request, res: Response, next: NextFunction) => {
@@ -67,7 +67,7 @@ export const createTask = async (req: Request, res: Response, next: NextFunction
     schemaResult = schemas.CreateTaskSchema.parse(req.body)
   } catch (error) {
     if (error instanceof ZodError) {
-      res.send(error.flatten()).status(400)
+      res.status(400).send(error.flatten())
       return
     }
     next(error)
@@ -82,5 +82,5 @@ export const createTask = async (req: Request, res: Response, next: NextFunction
     .returning("*")
     .execute()
 
-  res.send(createdTask.raw).status(200)
+  res.status(200).send(createdTask.raw)
 }

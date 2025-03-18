@@ -5,12 +5,12 @@ import Paper from '@mui/material/Paper'
 import { CreateTask, EditTask, Task } from '../../types/task'
 import { createTask, deleteTask, editTask, getTasks } from '../../api/taskApi'
 import ConfirmModal from '../../components/ConfirmModal'
-import EditTaskModal from './EditTaskModal'
 import { Button, Toolbar } from '@mui/material'
 import styled from '@emotion/styled'
-import CreateTaskModal from './CreateTaskModal'
 import Spinner from '../../components/Spinner'
 import { initialState, reducer, ActionType, ModalTypes } from './state'
+import { handleFormErrors } from '../../utils/formErrorHandler'
+import TaskModal from '../../components/TaskModal'
 
 const paginationModel = { page: 0, pageSize: 5 }
 
@@ -36,37 +36,34 @@ const Tasks = () => {
     try {
       if (state.selectedTask) {
         await deleteTask(state.selectedTask.id)
+        dispatch({ type: ActionType.DELETE })
+        handleCloseModal()
       }
     } catch (err) {
       console.log('error: ', err)
     }
-
-    dispatch({ type: ActionType.DELETE })
-    handleCloseModal()
   }, [state.selectedTask])
 
   const handleEditTask = useCallback(async (task: EditTask) => {
     try {
       if (state.selectedTask) {
         await editTask(state.selectedTask.id, task)
+        dispatch({ type: ActionType.EDIT, payload: task })
+        handleCloseModal()
       }
-    } catch (err) {
-      console.log('error: ', err)
+    } catch (error: any) {
+      return handleFormErrors(error)
     }
-
-    dispatch({ type: ActionType.EDIT, payload: task })
-    handleCloseModal()
   }, [state.selectedTask])
 
   const handleCreateTask = useCallback(async (task: CreateTask) => {
     try {
       const createdTask = await createTask(task)
       dispatch({ type: ActionType.CREATE, payload: createdTask })
-    } catch (err) {
-      console.log('error: ', err)
+      handleCloseModal()
+    } catch (error: any) {
+      return handleFormErrors(error)
     }
-
-    handleCloseModal()
   }, [state.selectedTask])
 
   const fetchTasks = useCallback(async () => {
@@ -137,16 +134,18 @@ const Tasks = () => {
         title='Delete task'
         description='Are you sure you want to delete selected task?'
       />
-      <EditTaskModal
+      <TaskModal
+        title='Edit task'
         isOpen={state.activeModal === ModalTypes.EDIT}
         onClose={handleCloseModal}
-        onSubmit={handleEditTask}
+        handleSubmit={handleEditTask}
         task={state.selectedTask as Task}
       />
-      <CreateTaskModal
+      <TaskModal
+        title='Create task'
         isOpen={state.activeModal === ModalTypes.CREATE}
         onClose={handleCloseModal}
-        onSubmit={handleCreateTask}
+        handleSubmit={handleCreateTask}
       />
     </Paper>
   )
