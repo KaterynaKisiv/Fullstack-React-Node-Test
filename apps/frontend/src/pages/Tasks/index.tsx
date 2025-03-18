@@ -11,12 +11,16 @@ import Spinner from '../../components/Spinner'
 import { initialState, reducer, ActionType, ModalTypes } from './state'
 import { handleFormErrors } from '../../utils/formErrorHandler'
 import TaskModal from '../../components/TaskModal'
+import { logout } from '../../api/authApi'
+import { useNavigate } from 'react-router-dom'
+import PATHS from '../../constants/paths'
 
 const paginationModel = { page: 0, pageSize: 5 }
 
-const Tasks = () => {
+const TasksPage = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [state, dispatch] = useReducer(reducer, initialState)
+  const navigate = useNavigate()
 
   const handleOpenModal = useCallback((type: ModalTypes, id: number | null) => () => {
     dispatch({
@@ -82,6 +86,11 @@ const Tasks = () => {
     fetchTasks()
   }, [])
 
+  const handleLogout = useCallback(async () => {
+    await logout()
+    navigate(PATHS.LOGIN)
+  }, [])
+
   const columns: GridColDef[] = useMemo(() => ([
     { field: 'id', type: 'number', headerName: 'ID', width: 70 },
     { field: 'title', headerName: 'Title', width: 130 },
@@ -112,15 +121,22 @@ const Tasks = () => {
 
   return (
     <Paper sx={{ height: '100%', width: '100%' }}>
-      <Toolbar>
-        <AddTaskButton
+      <ToolbarWrapper>
+        <Button
           onClick={handleOpenModal(ModalTypes.CREATE, null)}
           size="large"
           variant="contained"
         >
           Add Task
-        </AddTaskButton>
-      </Toolbar>
+        </Button>
+        <Button
+          onClick={handleLogout}
+          size="large"
+          variant="contained"
+        >
+          Logout
+        </Button>
+      </ToolbarWrapper>
       <DataGrid
         rows={state.tasks}
         columns={columns}
@@ -151,8 +167,9 @@ const Tasks = () => {
   )
 }
 
-export default Tasks
+export default TasksPage
 
-const AddTaskButton = styled(Button)`
-  margin-left: auto;
+const ToolbarWrapper = styled(Toolbar)`
+  justify-content: end;
+  gap: 10px;
 `
