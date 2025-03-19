@@ -2,7 +2,7 @@ import axios from 'axios'
 import PATHS from '../constants/paths'
 
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost/api',
+  baseURL: process.env.REACT_APP_API_URL,
   withCredentials: true,
 })
 

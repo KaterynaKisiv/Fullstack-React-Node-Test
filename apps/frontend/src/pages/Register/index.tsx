@@ -1,7 +1,6 @@
 import React, { useCallback } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { Button, TextField, Typography } from '@mui/material'
-import Spinner from '../../components/Spinner'
 import { Field, Form } from 'react-final-form'
 import styled from '@emotion/styled'
 import PATHS from '../../constants/paths'
@@ -21,7 +20,7 @@ const RegisterPage = () => {
     } catch (error: any) {
       return handleFormErrors(error)
     }
-  }, [])
+  }, [navigate])
 
   const validateRegister = useCallback((values: Record<string, any>): ValidationErrors | undefined => {
     return validate(values, AuthValidationSchema)
@@ -34,10 +33,6 @@ const RegisterPage = () => {
         onSubmit={handleSubmit}
         validate={validateRegister}
         render={({handleSubmit, submitting, submitError}) => {
-          if (submitting) {
-            return <Spinner/>
-          }
-
           return (
             <FormWrapper onSubmit={handleSubmit}>
               {submitError && (
@@ -53,8 +48,8 @@ const RegisterPage = () => {
                       label="Email"
                       value={input.value}
                       onChange={input.onChange}
-                      error={meta.submitError || meta.touched && meta.error}
-                      helperText={meta.submitError || meta.touched && meta.error}
+                      error={meta.submitError || (meta.touched && meta.error)}
+                      helperText={meta.submitError || (meta.touched && meta.error)}
                     />
                   )}
                 </Field>
@@ -68,8 +63,8 @@ const RegisterPage = () => {
                       label="Password"
                       value={input.value}
                       onChange={input.onChange}
-                      error={meta.submitError || meta.touched && meta.error}
-                      helperText={meta.submitError || meta.touched && meta.error}
+                      error={meta.submitError || (meta.touched && meta.error)}
+                      helperText={meta.submitError || (meta.touched && meta.error)}
                     />
                   )}
                 </Field>
@@ -80,6 +75,7 @@ const RegisterPage = () => {
                   type="submit"
                   size="large"
                   variant="contained"
+                  loading={submitting}
                 >
                   Register
                 </Button>

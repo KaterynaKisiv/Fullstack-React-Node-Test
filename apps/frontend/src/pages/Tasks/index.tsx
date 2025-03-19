@@ -46,7 +46,7 @@ const TasksPage = () => {
     } catch (err) {
       console.log('error: ', err)
     }
-  }, [state.selectedTask])
+  }, [state.selectedTask, handleCloseModal])
 
   const handleEditTask = useCallback(async (task: EditTask) => {
     try {
@@ -58,7 +58,7 @@ const TasksPage = () => {
     } catch (error: any) {
       return handleFormErrors(error)
     }
-  }, [state.selectedTask])
+  }, [state.selectedTask, handleCloseModal])
 
   const handleCreateTask = useCallback(async (task: CreateTask) => {
     try {
@@ -68,7 +68,7 @@ const TasksPage = () => {
     } catch (error: any) {
       return handleFormErrors(error)
     }
-  }, [state.selectedTask])
+  }, [handleCloseModal])
 
   const fetchTasks = useCallback(async () => {
     setIsLoading(true)
@@ -84,12 +84,12 @@ const TasksPage = () => {
 
   useEffect(() => {
     fetchTasks()
-  }, [])
+  }, [fetchTasks])
 
   const handleLogout = useCallback(async () => {
     await logout()
     navigate(PATHS.LOGIN)
-  }, [])
+  }, [navigate])
 
   const columns: GridColDef[] = useMemo(() => ([
     { field: 'id', type: 'number', headerName: 'ID', width: 70 },
@@ -113,7 +113,7 @@ const TasksPage = () => {
         />,
       ],
     },
-  ]), [])
+  ]), [handleOpenModal])
 
   if (isLoading) {
     return <Spinner />

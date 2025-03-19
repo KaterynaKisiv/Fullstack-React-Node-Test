@@ -27,7 +27,22 @@ cd project
 ### 2. Set Up Environment Variables
 Create a .env file in the project root with the variables from the .env.sample
 
-### 3. Build and Run the Project
+### 3. Migrations
+#### To generate new migration based on changes in entities:
+
+```sh
+MIGRATION_NAME=<your_migration_name> task generate-migration
+```
+
+This will generate new migration in the migrations folder with the name, passed to the MIGRATION_NAME variable
+
+#### To run migrations:
+
+```sh
+task run-migrations
+```
+
+### 4. Build and Run the Project
 Use task to build and start all services:
 
 ```sh
@@ -44,20 +59,6 @@ Nginx acts as a reverse proxy, routing incoming requests to the correct services
 - Requests to /api/* go to the backend service.
 - All other requests go to the frontend.
 
-### 4. Migrations
-#### To generate new migration based on changes in entities:
-
-```sh
-MIGRATION_NAME=<your_migration_name> task generate-migration
-```
-
-This will generate new migration in the migrations folder with the name, passed to the MIGRATION_NAME variable
-
-#### To run migrations:
-
-```sh
-task run-migrations
-```
 
 ### 5. Access the Application
 
