@@ -21,7 +21,6 @@ Before running the project, ensure you have the following installed:
 
 ```sh
 git clone https://github.com/KaterynaKisiv/Fullstack-React-Node-Test.git
-cd project
 ```
 
 ### 2. Set Up Environment Variables
@@ -62,8 +61,8 @@ Nginx acts as a reverse proxy, routing incoming requests to the correct services
 
 ### 5. Access the Application
 
-- Frontend: http://localhost
-- Backend API: http://localhost/api
+- Frontend: http://localhost:8000
+- Backend API: http://localhost:8000/api
 - Database: Available on localhost:5599 (PostgreSQL)
 
 
