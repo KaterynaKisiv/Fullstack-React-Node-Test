@@ -32,13 +32,13 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
     .getOne()
 
   if (!user) {
-    res.status(401).send("Invalid credentials")
+    res.status(400).send("Invalid credentials")
     return
   }
 
   const isPasswordValid = await bcrypt.compare(password, user.password)
   if (!isPasswordValid) {
-    res.status(401).send("Invalid credentials")
+    res.status(400).send("Invalid credentials")
     return
   }
 

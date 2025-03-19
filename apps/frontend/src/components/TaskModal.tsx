@@ -71,8 +71,8 @@ const TaskModal = ({
                       label="Title"
                       value={input.value}
                       onChange={input.onChange}
-                      error={meta.submitError || meta.touched && meta.error}
-                      helperText={meta.submitError || meta.touched && meta.error}
+                      error={meta.submitError || (meta.touched && meta.error)}
+                      helperText={meta.submitError || (meta.touched && meta.error)}
                     />
                   )}
                 </Field>
@@ -85,8 +85,8 @@ const TaskModal = ({
                       label="Description"
                       value={input.value}
                       onChange={input.onChange}
-                      error={meta.submitError || meta.touched && meta.error}
-                      helperText={meta.submitError || meta.touched && meta.error}
+                      error={meta.submitError || (meta.touched && meta.error)}
+                      helperText={meta.submitError || (meta.touched && meta.error)}
                     />
                   )}
                 </Field>

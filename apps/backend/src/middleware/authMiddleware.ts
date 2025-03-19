@@ -9,7 +9,7 @@ export async function authMiddleware (req: Request, res: Response, next: NextFun
   if (!token) {
     res.status(401).send("Unauthorized")
     res.clearCookie("token")
-    return
+    return next()
   }
 
   const session = await dataSource

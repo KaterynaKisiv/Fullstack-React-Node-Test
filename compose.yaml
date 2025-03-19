@@ -1,12 +1,14 @@
 services:
   frontend:
     image: tasks-managing-frontend:latest
+    environment:
+      - REACT_APP_API_URL=http://localhost:8000/api
     volumes:
       - ./apps/frontend/src:/fullstackTest/apps/frontend/src
       - ./apps/frontend/tsconfig.json:/fullstackTest/apps/frontend/tsconfig.json
     command: yarn start
     healthcheck:
-      test: ["CMD", "curl", "http://frontend:3000/"]
+      test: ["CMD", "curl", "-f", "http://frontend:3000/"]
       interval: 10s
       timeout: 3s
       retries: 3
@@ -32,11 +34,11 @@ services:
     image: nginx:alpine
     depends_on:
       frontend:
-        condition: service_healthy
+        condition: service_started
       backend:
-        condition: service_healthy
+        condition: service_started
     ports:
-      - "80:80"
+      - "8000:8000"
     volumes:
       - ./apps/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
 
